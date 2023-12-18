@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            {{.Style}}
+        </style>
+        <title>{{ .Title}}</title>
+    </head>
+    <header> <h1>{{ .Title}}</h1>  </header>
+    <body>
+        <table border="1" align="center" width="100%">
+        <caption>{{ .Caption }}</caption>
+        
+            <tbody>
+                {{range $key, $value := .About}} 
+                    <tr><td align="left">{{ $key }}</td> <td align="left">{{ $value }}</td></tr> 
+                {{end}}
+            </tbody>
+        </table>
+    </body>
+
+    
+        {{ template "footer" }}
+
+
+</html>

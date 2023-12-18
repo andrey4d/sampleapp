@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {{ .Style }}
+        <title>{{ .Title}}</title>
+    </head>
+    <body>
+        <h1>{{ .Title }}</h1>
+        <p>{{ .Ok }}</p>
+    </body>
+    {{ template "footer" }}
+
+</html>
