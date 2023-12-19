@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        {{ .Style }}
-        <title>{{ .Title}}</title>
-    </head>
-    <body>
-        <h1>{{ .Title }}</h1>
-        <p>{{ .Ok }}</p>
-    </body>
-    {{ .Footer }}
+<div>
+    <table border="1" align="center" width="60%">
+        <tbody>
+            <tr ><td align="left" style="width: 20%;">WEB Server hostname:</td><td align="left">{{ .WebHostname }} </td></tr>
+            <tr ><td align="left" style="width: 20%;">API Server hostname:</td><td align="left"> {{ .HostEnv.ApiHostname }}  </td></tr>
+        </tbody>
+    </table>
+</div>
+<table border="1" align="center" width="100%">
+    <caption>{{ .Caption }}</caption>
 
-</html>
+    <tbody>
+        {{range $key, $value := .HostEnv.Environment }} 
+            <tr><td align="left">{{ $key }}</td> <td align="left">{{ $value }}</td></tr> 
+        {{end}}
+    </tbody>
+</table>

@@ -5,32 +5,28 @@
 package servers
 
 import (
-	"fmt"
+	"html/template"
 	"log"
 	"net/http"
-	"sampleapp/internal/handlers/front"
+	"sampleapp/internal/handlers"
+	"sampleapp/internal/handlers/web"
 )
 
 func FrontRun(port, backendURL string, loggerInfo *log.Logger) error {
 
-	http.HandleFunc("/", front.Index(backendURL, loggerInfo))
-	http.HandleFunc("/info", front.Info(backendURL, loggerInfo))
-	http.HandleFunc("/about", front.About(backendURL, loggerInfo))
-	http.HandleFunc("/log", Log(loggerInfo))
+	handlerOptions := handlers.HandlerOptions{
+		BaseTemplate: template.Must(template.ParseFiles(web.StyleTemplate, web.FooterTemplate, web.BaseTemplate)),
+		Logger:       loggerInfo,
+		BackendUrl:   backendURL,
+	}
+
+	http.HandleFunc("/", web.Index(handlerOptions))
+	http.HandleFunc("/info", web.Info(handlerOptions))
+	http.HandleFunc("/about", web.About(handlerOptions))
 
 	loggerInfo.Printf("Run frontend server on port %s\n", port)
 	loggerInfo.Printf("Wait backend on %s\n", backendURL)
 	err := http.ListenAndServe(":"+port, nil)
 
 	return err
-}
-
-func Log(log *log.Logger) http.HandlerFunc {
-	log.Println("logger logHandler enabled")
-
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println("Method", r.Method)
-		fmt.Fprint(w, "Logger....")
-	}
-
 }

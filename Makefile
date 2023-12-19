@@ -27,7 +27,7 @@ clean: go-clean
 go-build: 
 	@echo "  >  Building binary..."
 	go build -o $(BIN)/backend $(BASE)/cmd/backend/main.go
-	go build -o $(BIN)/frontend $(BASE)/cmd/frontend/main.go
+	go build -o $(BIN)/webserver $(BASE)/cmd/webserver/main.go
 
 ## go-clean: Clean build files. Runs `go clean` internally.
 go-clean:

@@ -1,0 +1,19 @@
+
+{{define "base"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {{ template "style"}}
+        <title>{{ .Title}}</title>
+    </head>
+    <header> <h1>{{ .Title}}</h1>  </header>
+    <body class="container">
+
+        {{ template "content" . }}
+
+    </body>
+        {{ template "footer" }}
+</html>
+{{end}}
+
