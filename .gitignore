@@ -2,3 +2,5 @@
 /venv/
 /tmp/
 bin
+helmcharts/go-sample-application/values-dev.yaml
+helmcharts/go-sample-application/values-test.yaml

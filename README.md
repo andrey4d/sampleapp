@@ -4,6 +4,8 @@ The application contents two servers:
 1. API server
 2. WEB Server
 
+Application don't use any dependency packages.
+
 ### Build container from scratch
 1. Build from github.com 
  ```shell
@@ -17,9 +19,14 @@ make container
 ```shell
 make -e BUILDER=buildah -e IMAGE_NAME=go-demo-app container
 ```
-### 
+### Running containers with podman
+```shell
+make run
+```
 
-### Local Build
+
+
+## Local Build
 ```shell
 make build
 ```

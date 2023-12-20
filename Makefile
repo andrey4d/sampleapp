@@ -12,10 +12,6 @@ help: Makefile
 include .env
 PROJECTNAME=$(shell basename "$(PWD)")
 
-# Container builder
-CONTAINER=podman
-BUILDER=podman
-IMAGE_NAME=sampleapp
 
 BACKEND_URL="http://$(word 1, $(shell hostname -I)):8070"
 

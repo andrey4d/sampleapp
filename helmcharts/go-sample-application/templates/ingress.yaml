@@ -1,0 +1,26 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "sample-application-chart.fullname" . }}
+  annotations:
+    kubernetes.io/ingress.class: haproxy
+  labels:
+    app:  {{ include "sample-application-chart.fullname" . }}
+    {{- include "sample-application-chart.labels" . | nindent 4 }}
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: webserver-{{ include "sample-application-chart.fullname" . }}
+                port:
+                  number: 80
+
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+      - {{ .Values.ingress.host }}

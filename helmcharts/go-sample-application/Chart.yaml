@@ -1,0 +1,9 @@
+apiVersion: v2
+name: sample-application-chart
+description: Sample application chart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Containerization Team
+    email: andrey4d.dev@gmail.com

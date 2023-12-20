@@ -1,0 +1,43 @@
+backend:
+  image:
+    name: registry.home.local/go-sample-application
+    tag: 1.0.0
+  replica:
+    count: 4
+  container:
+    port: 8070
+  env:
+    banner: SIMPLE APPLICATION andrey4d.dev@gmail.com
+  database:
+    username: dbuserFromSecret
+    password: sUpperP@ssw0rd
+  resources:
+    requests:
+      cpu: 1
+      memory: 256Mi
+    limits:
+      cpu: 2
+      memory: 512Mi
+
+webserver:
+  image:
+    name: registry.home.local/go-sample-application
+    tag: 1.0.0
+  replica:
+    count: 2
+  container:
+    port: 8080
+  resources:
+    requests:
+      cpu: 1
+      memory: 256Mi
+    limits:
+      cpu: 2
+      memory: 512Mi
+
+ingress:
+  host: go-sample-app.app.home.local
+
+service:
+  type: ClusterIP
+

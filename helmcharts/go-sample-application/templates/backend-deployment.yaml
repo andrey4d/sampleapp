@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  backend-{{ include "sample-application-chart.fullname" . }}
+  labels:
+    {{- include "sample-application-chart.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app:  backend-{{ include "sample-application-chart.fullname" . }}
+  replicas: {{ .Values.backend.replica.count }}
+  template:
+    metadata:
+      labels:
+        app:  backend-{{ include "sample-application-chart.fullname" . }}
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/backend-database-secret.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name:  backend-{{ include "sample-application-chart.fullname" . }}
+          image: "{{ .Values.backend.image.name }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.backend.container.port }}
+              name: backend-http
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.backend.container.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 15
+          env:
+          - name: BANNER
+            value: {{ .Values.backend.env.banner | required "BANNER is required." | quote}}
+          envFrom:
+            - secretRef:
+                name: backend-{{ include "sample-application-chart.fullname" . }}-secret
+          resources:
+            requests:
+              cpu: {{ .Values.backend.resources.requests.cpu }}
+              memory: {{ .Values.backend.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.backend.resources.limits.cpu }}
+              memory: {{ .Values.backend.resources.limits.memory }}
+      imagePullSecrets:
+      - name: {{ .Values.registry.name }}-{{ include "sample-application-chart.name" . }}

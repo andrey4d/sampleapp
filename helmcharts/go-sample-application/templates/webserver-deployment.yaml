@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  webserver-{{ include "sample-application-chart.fullname" . }}
+  labels:
+    {{- include "sample-application-chart.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app:  webserver-{{ include "sample-application-chart.fullname" . }}
+  replicas: {{ .Values.webserver.replica.count }}
+  template:
+    metadata:
+      labels:
+        app:  webserver-{{ include "sample-application-chart.fullname" . }}
+    spec:
+      containers:
+        - name:  webserver-{{ include "sample-application-chart.fullname" . }}
+          image: {{ .Values.webserver.image.name }}:{{ .Values.webserver.image.tag }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.webserver.container.port }}
+              name: http
+          command:
+            - /opt/webserver
+          env:
+            - name: BACKEND_URL
+              value: "http://backend-{{ include "sample-application-chart.fullname" . }}:{{ .Values.backend.container.port }}"
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.webserver.container.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 15
+          resources:
+            requests:
+              cpu: {{ .Values.webserver.resources.requests.cpu }}
+              memory: {{ .Values.webserver.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.webserver.resources.limits.cpu }}
+              memory: {{ .Values.webserver.resources.limits.memory }}
+      imagePullSecrets:
+      - name: {{ .Values.registry.name }}-{{ include "sample-application-chart.name" . }}
