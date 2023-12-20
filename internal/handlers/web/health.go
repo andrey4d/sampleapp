@@ -21,15 +21,12 @@ func Health(options handlers.HandlerOptions) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		options.Logger.Printf("host: %s, path: %s , method: %s, agent: %s", r.RemoteAddr, r.URL.Path, r.Method, r.UserAgent())
-		if r.URL.Path != "/" {
-			ErrorHandler(w, r, http.StatusNotFound)
-			return
-		}
+
 		tmplBase, err := options.BaseTemplate.Clone()
 		if err != nil {
 			options.Logger.Println(err)
 		}
-		tmplBody := template.Must(template.ParseFiles())
+		tmplBody := template.Must(template.ParseFiles(HealthTemplate))
 		tmplBase.AddParseTree("content", tmplBody.Tree)
 
 		htmlHealth := &HtmlHealth{

@@ -22,6 +22,7 @@ func FrontRun(port, backendURL string, loggerInfo *log.Logger) error {
 
 	http.HandleFunc("/", web.Index(handlerOptions))
 	http.HandleFunc("/info", web.Info(handlerOptions))
+	http.HandleFunc("/health", web.Health(handlerOptions))
 	http.HandleFunc("/about", web.About(handlerOptions))
 
 	loggerInfo.Printf("Run frontend server on port %s\n", port)
