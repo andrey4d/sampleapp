@@ -13,7 +13,8 @@ include .env
 PROJECTNAME=$(shell basename "$(PWD)")
 
 # Container builder
-BUILDER="podman"
+BUILDER=podman
+IMAGE_NAME=sample-app
 
 
 # Go related variables.
@@ -39,6 +40,6 @@ go-clean:
 	rm -rf ./bin 
 	go clean
 
-## Build container from scratch
+## container: Build container from scratch
 container:
 	$(BUILDER) build -t $(IMAGE_NAME) -f Dockerfile .
