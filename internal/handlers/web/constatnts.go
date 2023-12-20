@@ -11,5 +11,6 @@ const StyleTemplate = TemplatePath + "style.html"
 const IndexTemplate = TemplatePath + "index.html"
 const AboutTemplate = TemplatePath + "about.html"
 const InfoTemplate = TemplatePath + "info.html"
+const HealthTemplate = TemplatePath + "health.html"
 
 const title = "Простой HTTP-сервер."

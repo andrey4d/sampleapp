@@ -6,21 +6,47 @@ package web
 
 import (
 	"encoding/json"
-	"log"
+	"html/template"
 	"net/http"
+	"sampleapp/internal/handlers"
+	"sampleapp/internal/libs"
 )
 
-type health struct {
+type HtmlHealth struct {
+	Title  string
 	Health string `json:"health"`
 }
 
-func Health(log *log.Logger) http.HandlerFunc {
+func Health(options handlers.HandlerOptions) http.HandlerFunc {
+
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("host: %s, path: %s , method: %s, agent: %s", r.RemoteAddr, r.URL.Path, r.Method, r.UserAgent())
-		w.Header().Add("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(
-			health{
-				Health: "healthy",
-			})
+		options.Logger.Printf("host: %s, path: %s , method: %s, agent: %s", r.RemoteAddr, r.URL.Path, r.Method, r.UserAgent())
+		if r.URL.Path != "/" {
+			ErrorHandler(w, r, http.StatusNotFound)
+			return
+		}
+		tmplBase, err := options.BaseTemplate.Clone()
+		if err != nil {
+			options.Logger.Println(err)
+		}
+		tmplBody := template.Must(template.ParseFiles())
+		tmplBase.AddParseTree("content", tmplBody.Tree)
+
+		htmlHealth := &HtmlHealth{
+			Title: title,
+		}
+
+		out, err := libs.GetJsonFromApi(options.BackendUrl + "/health")
+		if err != nil {
+			options.Logger.Println(err)
+			htmlHealth.Health = "Unhealthy"
+		} else {
+			json.Unmarshal(out, htmlHealth)
+		}
+
+		w.Header().Add("Content-Type", "text/html")
+		if err := tmplBase.ExecuteTemplate(w, "base", htmlHealth); err != nil {
+			options.Logger.Println(err)
+		}
 	}
 }

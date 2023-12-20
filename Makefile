@@ -44,8 +44,8 @@ container:
 
 ## run: Start containers 
 run:
-	$(CONTAINER) run --rm -d -p 8070:8070 --name sampleapp-api localhost/sampleapp
-	$(CONTAINER) run --rm -d -p 8080:8080 -e BACKEND_URL=$(BACKEND_URL) --name sampleapp-web localhost/sampleapp /opt/webserver
+	$(CONTAINER) run --rm -d -p 8070:8070 --name sampleapp-api $(IMAGE_NAME)
+	$(CONTAINER) run --rm -d -p 8080:8080 -e BACKEND_URL=$(BACKEND_URL) --name sampleapp-web $(IMAGE_NAME) /opt/webserver
 
 ## stop: Stop containers 
 stop:
