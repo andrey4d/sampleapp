@@ -12,6 +12,10 @@ help: Makefile
 include .env
 PROJECTNAME=$(shell basename "$(PWD)")
 
+# Container builder
+BUILDER="podman"
+
+
 # Go related variables.
 BASE=$(shell pwd)
 BIN=$(BASE)/bin
@@ -34,3 +38,7 @@ go-clean:
 	@echo "  >  Cleaning build cache"
 	rm -rf ./bin 
 	go clean
+
+## Build container from scratch
+container:
+	$(BUILDER) build -t $(IMAGE_NAME) -f Dockerfile .
