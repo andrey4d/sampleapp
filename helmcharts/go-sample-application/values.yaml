@@ -37,7 +37,11 @@ webserver:
 
 ingress:
   host: go-sample-app.app.home.local
+  class: haproxy
 
 service:
   type: ClusterIP
 
+registry:
+  name: registry-home-local
+  config: ewoJImF1dGhz......
